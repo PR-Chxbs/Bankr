@@ -21,5 +21,10 @@ import com.prince.bankr.data.local.converters.Converters
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    //
+    abstract fun userDao(): UserDao
+    abstract fun accountDao(): AccountDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun transactionDao(): TransactionDao
+    abstract fun budgetGoalDao(): BudgetGoalDao
+    abstract fun badgeDao(): BadgeDao
 }
