@@ -16,10 +16,10 @@ interface CategoryDao {
     suspend fun deleteCategory(category: Category)
 
     @Query("SELECT * FROM categories WHERE user_id = :userId")
-    suspend fun getAllCategories(userId: Int): Flow<List<Category>>
+    fun getAllCategories(userId: Int): Flow<List<Category>>
 
     @Query("SELECT * FROM categories WHERE user_id = :userId AND monthly_limit <= :monthlyLimit")
-    suspend fun getCategoriesByMonthlyLimit(userId: Int, monthlyLimit: Int): Flow<List<Category>>
+    fun getCategoriesByMonthlyLimit(userId: Int, monthlyLimit: Int): Flow<List<Category>>
 
     @Query("SELECT * FROM categories WHERE category_id = :categoryId")
     suspend fun getCategoryById(categoryId: Int): Category?

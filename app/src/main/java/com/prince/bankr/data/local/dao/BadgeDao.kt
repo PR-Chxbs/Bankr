@@ -19,8 +19,5 @@ interface BadgeDao {
     fun getAllBadgesForUser(userId: Int): Flow<List<Badge>>
 
     @Query("SELECT * FROM badges WHERE user_id = :userId AND badge_id = :badgeId")
-    fun getBadgeById(userId: Int, badgeId: Int): Flow<List<Badge>>
-
-    @Query("SELECT * FROM badges WHERE user_id = :userId AND name = :name")
-    suspend fun getBadgeById(userId: Int, name: String): Badge?
+    suspend fun getBadgeById(userId: Int, badgeId: Int): Badge
 }
