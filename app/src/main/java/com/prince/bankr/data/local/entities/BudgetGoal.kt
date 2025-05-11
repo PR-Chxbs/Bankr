@@ -14,6 +14,9 @@ import java.util.Date
 data class BudgetGoal(
     @PrimaryKey( autoGenerate = true) val goal_id: Int = 0,
     val user_id: Int,
+    val name: String,
+    val description: String,
     val month: Date,
-    val year: Date
+    val year: Date,
+    val total_budget: Int
 )

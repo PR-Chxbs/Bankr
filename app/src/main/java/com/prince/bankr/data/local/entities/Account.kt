@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey
 )
 data class Account(
     @PrimaryKey(autoGenerate = true) val account_id: Int = 0,
+    val user_id: Int,
     val name: String,
     val image_uri: String,
     val balance: Int,
