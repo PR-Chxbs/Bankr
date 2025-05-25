@@ -20,7 +20,7 @@ import com.prince.bankr.data.local.converters.Converters
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class BankrDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun accountDao(): AccountDao
     abstract fun categoryDao(): CategoryDao
