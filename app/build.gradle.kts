@@ -7,6 +7,7 @@ plugins {
 
     // dagger
     kotlin("kapt")
+    alias(libs.plugins.hilt.android)
 }
 
 android {

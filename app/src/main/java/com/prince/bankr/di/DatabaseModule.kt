@@ -1,5 +1,6 @@
 package com.prince.bankr.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.prince.bankr.data.local.BankrDatabase
@@ -17,7 +18,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Context): BankrDatabase {
+    fun provideDatabase(app: Application): BankrDatabase {
         return Room.databaseBuilder(
             app,
             BankrDatabase::class.java,
