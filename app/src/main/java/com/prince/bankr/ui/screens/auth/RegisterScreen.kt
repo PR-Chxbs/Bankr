@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.prince.bankr.utils.global.spaceDp
 
 @Composable
 fun RegisterScreen(
@@ -24,8 +25,8 @@ fun RegisterScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(spaceDp),
+        verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
             value = viewModel.name,
@@ -34,12 +35,16 @@ fun RegisterScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(spaceDp))
+
         OutlinedTextField(
             value = viewModel.email,
             onValueChange = { viewModel.email = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(spaceDp))
 
         OutlinedTextField(
             value = viewModel.password,
@@ -48,6 +53,8 @@ fun RegisterScreen(
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation()
         )
+
+        Spacer(modifier = Modifier.height(spaceDp))
 
         Button(
             onClick = {

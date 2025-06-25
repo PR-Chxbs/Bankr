@@ -13,6 +13,9 @@ import com.prince.bankr.R
 import com.prince.bankr.ui.components.BottomNavBar
 import com.prince.bankr.ui.components.HomeTopBar
 import com.prince.bankr.ui.screens.PlaceholderScreen
+import com.prince.bankr.ui.screens.account.AccountsScreen
+import com.prince.bankr.ui.screens.category.AddCategoryScreen
+import com.prince.bankr.ui.screens.category.CategoriesScreen
 import com.prince.bankr.ui.screens.profileMenu.ProfileMenuScreen
 
 @Composable
@@ -150,7 +153,7 @@ fun AppNavigation() {
         }
 
         composable(Screen.Accounts.route) {
-            PlaceholderScreen(
+            AccountsScreen(
                 topBar = {
                     HomeTopBar(
                         navController = navController
@@ -163,15 +166,48 @@ fun AppNavigation() {
                         currentRoute = Screen.Accounts.route
                     )
                 },
-                screen = "Accounts"
+                onAddAccountClick = {}
             )
         }
 
+        // Account extras
+        composable(Screen.AddAccount.route) {
+            AddTransactionScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Accounts.route
+                    )
+                }
+
+            )
+        }
 
         // --------- Profile Menu Routes ---------
         composable(Screen.ProfileMenu.route) {
             ProfileMenuScreen(
-                navController = navController
+                navController = navController,
+                onBackClick = {navController.navigate(Screen.Home.route)}
+            )
+        }
+
+        composable(Screen.Category.route) {
+            CategoriesScreen(
+                onBackClick = {navController.navigate(Screen.ProfileMenu.route)},
+                onAddCategoryClick = {navController.navigate(Screen.AddCategory.route)}
+            )
+        }
+
+        composable(Screen.AddCategory.route) {
+            AddCategoryScreen(
+                onBackClick = {navController.navigate(Screen.Category.route)},
+                onCategorySaved = {navController.navigate(Screen.Category.route)}
             )
         }
     }

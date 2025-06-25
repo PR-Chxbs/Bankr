@@ -88,7 +88,9 @@ fun AddTransactionScreen(
                 value = viewModel.description,
                 onValueChange = { viewModel.description = it },
                 label = { Text("Description") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
             )
 
             DropdownSelector(

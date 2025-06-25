@@ -14,5 +14,6 @@ data class Category(
     @PrimaryKey(autoGenerate = true) val category_id: Int = 0,
     val user_id: Int,
     val name: String,
-    val monthly_limit: Int?
+    val monthly_limit: Int?,
+    val iconKey: String
 )

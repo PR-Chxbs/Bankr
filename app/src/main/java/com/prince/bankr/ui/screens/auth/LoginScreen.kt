@@ -11,6 +11,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.prince.bankr.utils.global.spaceDp
 
 @Composable
 fun LoginScreen(
@@ -21,11 +22,12 @@ fun LoginScreen(
     val context = LocalContext.current
     val errorMessage = viewModel.errorMessage
 
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
@@ -35,6 +37,8 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.height(spaceDp))
+
         OutlinedTextField(
             value = viewModel.password,
             onValueChange = { viewModel.password = it },
@@ -42,6 +46,8 @@ fun LoginScreen(
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(spaceDp))
 
         if (errorMessage != null) {
             Text(errorMessage, color = MaterialTheme.colorScheme.error)
