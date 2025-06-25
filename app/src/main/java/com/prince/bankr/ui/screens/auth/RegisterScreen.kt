@@ -16,7 +16,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
-    onRegisterSuccess: () -> Unit
+    onRegisterSuccess: () -> Unit,
+    onGoToLogin: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -60,9 +61,21 @@ fun RegisterScreen(
                     }
                 )
             },
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier
+                .align(Alignment.End)
+                .fillMaxWidth()
         ) {
             Text("Register")
+        }
+
+        Text("Or")
+        Button(
+            onClick = { onGoToLogin() },
+            modifier = Modifier
+                .align(Alignment.End)
+                .fillMaxWidth()
+        ) {
+            Text("Login")
         }
     }
 }

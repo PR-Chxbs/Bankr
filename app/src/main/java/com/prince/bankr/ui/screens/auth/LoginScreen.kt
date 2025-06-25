@@ -15,7 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onGoToRegister: () -> Unit
 ) {
     val context = LocalContext.current
     val errorMessage = viewModel.errorMessage
@@ -53,9 +54,20 @@ fun LoginScreen(
                     onLoginSuccess()
                 }
             },
-            modifier = Modifier.align(Alignment.End)
+            modifier = Modifier
+                .align(Alignment.End)
+                .fillMaxWidth()
         ) {
             Text("Login")
+        }
+        Text("Or")
+        Button(
+            onClick = { onGoToRegister() },
+            modifier = Modifier
+                .align(Alignment.End)
+                .fillMaxWidth()
+            ) {
+            Text("Register")
         }
     }
 }
@@ -63,5 +75,5 @@ fun LoginScreen(
 @Preview
 @Composable
 fun LoginScreenPreview(){
-    LoginScreen(onLoginSuccess = {})
+    LoginScreen(onLoginSuccess = {}, onGoToRegister = {})
 }
