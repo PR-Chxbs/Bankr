@@ -5,37 +5,160 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.prince.bankr.ui.screens.addtransaction.AddTransactionScreen
 import com.prince.bankr.ui.screens.auth.LoginScreen
 import com.prince.bankr.ui.screens.auth.RegisterScreen
 //import com.prince.bankr.ui.screens.home.HomeScreen
+import com.prince.bankr.ui.components.BottomNavItem
+import com.prince.bankr.R
+import com.prince.bankr.ui.components.BottomNavBar
+import com.prince.bankr.ui.components.HomeTopBar
+import com.prince.bankr.ui.screens.PlaceholderScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "login") {
-        composable("login") {
+    val bottomNavItems = listOf(
+        BottomNavItem(
+            route = Screen.Home.route,
+            label = "Home",
+            // iconRes = R.drawable.ic_dashboard
+            iconRes = R.drawable.ic_home_icon
+        ),
+        BottomNavItem(
+            route = Screen.Analytics.route,
+            label = "Analytics",
+            iconRes = R.drawable.ic_home_icon
+        ),
+        BottomNavItem(
+            route = Screen.AddTransaction.route,
+            label = "Add",
+            iconRes = R.drawable.ic_home_icon
+        ),
+        BottomNavItem(
+            route = Screen.Budget.route,
+            label = "Budget",
+            iconRes = R.drawable.ic_home_icon
+        ),
+        BottomNavItem(
+            route = Screen.Accounts.route,
+            label = "Accounts",
+            iconRes = R.drawable.ic_home_icon
+        )
+
+    )
+
+    NavHost(navController, startDestination = Screen.Login.route) {
+        composable(Screen.Login.route) {
             LoginScreen(
-                onLoginSuccess = { navController.navigate("home")
-                    { popUpTo("login")
+                onLoginSuccess = { navController.navigate(Screen.Home.route)
+                    { popUpTo(Screen.Login.route)
                         { inclusive = true }
                     }
-                }
+                },
+                onGoToRegister = { navController.navigate(Screen.Register.route)}
             )
         }
 
-        composable("register") {
+        composable(Screen.Register.route) {
             RegisterScreen(
-                onRegisterSuccess = { navController.navigate("home")
-                    { popUpTo("register")
+                onRegisterSuccess = { navController.navigate(Screen.Home.route)
+                    { popUpTo(Screen.Register.route)
                         { inclusive = true }
                     }
+                },
+                onGoToLogin = { navController.navigate(Screen.Login.route)}
+            )
+        }
+
+        composable(Screen.Home.route) {
+            PlaceholderScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Home.route
+                    )
+                },
+                screen = "Home"
+            )
+        }
+
+        composable(Screen.Analytics.route) {
+            PlaceholderScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Analytics.route
+                    )
+                },
+                screen = "Analytics"
+            )
+        }
+
+        composable(Screen.AddTransaction.route) {
+            AddTransactionScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.AddTransaction.route
+                    )
                 }
             )
         }
 
-        /*composable("home") {
-            HomeScreen()
-        }*/
+        composable(Screen.Budget.route) {
+            PlaceholderScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Budget.route
+                    )
+                },
+                screen = "Budget"
+            )
+        }
+
+        composable(Screen.Accounts.route) {
+            PlaceholderScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Accounts.route
+                    )
+                },
+                screen = "Accounts"
+            )
+        }
     }
 }

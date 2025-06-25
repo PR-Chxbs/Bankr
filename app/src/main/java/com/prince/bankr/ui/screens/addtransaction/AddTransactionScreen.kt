@@ -33,9 +33,12 @@ import com.prince.bankr.data.local.enums.Type
 import com.prince.bankr.ui.components.DropdownSelector
 import com.prince.bankr.ui.components.SegmentedButton
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTransactionScreen(
-    viewModel: AddTransactionViewModel = hiltViewModel()
+    viewModel: AddTransactionViewModel = hiltViewModel(),
+    topBar: @Composable () -> Unit,
+    bottomBar: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     val categories = viewModel.categories.value
@@ -48,84 +51,91 @@ fun AddTransactionScreen(
         SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(viewModel.date)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        // Amount
-        OutlinedTextField(
-            value = viewModel.amount.toString(),
-            onValueChange = { viewModel.amount = it.toIntOrNull() ?: 0 },
-            label = { Text("Amount") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
-        )
 
-        // Description
-        OutlinedTextField(
-            value = viewModel.description,
-            onValueChange = { viewModel.description = it },
-            label = { Text("Description") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        // Account dropdown
-        DropdownSelector(
-            label = "Select Account",
-            options = accounts,
-            selectedOption = selectedAccount,
-            onOptionSelected = { viewModel.selectedAccountId = it.account_id },
-            optionLabel = { it.name }
-        )
-
-        // Category dropdown
-        DropdownSelector(
-            label = "Select Category",
-            options = categories,
-            selectedOption = selectedCategory,
-            onOptionSelected = { viewModel.selectedCategoryId = it.category_id },
-            optionLabel = { it.name }
-        )
-
-        // Transaction type selector
-        SegmentedButton(
-            options = Type.entries.toList(),
-            selectedIndex = selectedType,
-            onOptionSelected = { viewModel.transactionType = it }
-        )
-
-        // Date picker
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable {
-                val calendar = Calendar.getInstance().apply { time = viewModel.date }
-                DatePickerDialog(
-                    context,
-                    { _, year, month, dayOfMonth ->
-                        val newDate = Calendar.getInstance().apply {
-                            set(year, month, dayOfMonth)
-                        }.time
-                        viewModel.date = newDate
-                    },
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
-                ).show()
-            }
+    Scaffold(
+        topBar = topBar,
+        bottomBar = bottomBar
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
-            Spacer(Modifier.width(8.dp))
-            Text("Date: $formattedDate")
-        }
+            // Amount
+            OutlinedTextField(
+                value = viewModel.amount.toString(),
+                onValueChange = { viewModel.amount = it.toIntOrNull() ?: 0 },
+                label = { Text("Amount") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        // Submit button
-        Button(onClick = {
-            viewModel.addTransaction()
-            Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show()
-        }) {
-            Text("Add Transaction")
+            // Description
+            OutlinedTextField(
+                value = viewModel.description,
+                onValueChange = { viewModel.description = it },
+                label = { Text("Description") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Account dropdown
+            DropdownSelector(
+                label = "Select Account",
+                options = accounts,
+                selectedOption = selectedAccount,
+                onOptionSelected = { viewModel.selectedAccountId = it.account_id },
+                optionLabel = { it.name }
+            )
+
+            // Category dropdown
+            DropdownSelector(
+                label = "Select Category",
+                options = categories,
+                selectedOption = selectedCategory,
+                onOptionSelected = { viewModel.selectedCategoryId = it.category_id },
+                optionLabel = { it.name }
+            )
+
+            // Transaction type selector
+            SegmentedButton(
+                options = Type.entries.toList(),
+                selectedIndex = selectedType,
+                onOptionSelected = { viewModel.transactionType = it }
+            )
+
+            // Date picker
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    val calendar = Calendar.getInstance().apply { time = viewModel.date }
+                    DatePickerDialog(
+                        context,
+                        { _, year, month, dayOfMonth ->
+                            val newDate = Calendar.getInstance().apply {
+                                set(year, month, dayOfMonth)
+                            }.time
+                            viewModel.date = newDate
+                        },
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                    ).show()
+                }
+            ) {
+                Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
+                Spacer(Modifier.width(8.dp))
+                Text("Date: $formattedDate")
+            }
+
+            // Submit button
+            Button(onClick = {
+                viewModel.addTransaction()
+                Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show()
+            }) {
+                Text("Add Transaction")
+            }
         }
     }
+
 }
