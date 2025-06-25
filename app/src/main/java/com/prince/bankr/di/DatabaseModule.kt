@@ -23,7 +23,9 @@ object DatabaseModule {
             app,
             BankrDatabase::class.java,
             "bankr_db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides fun provideAccountDao(db: BankrDatabase): AccountDao = db.accountDao()
