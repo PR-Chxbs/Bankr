@@ -1,4 +1,4 @@
-package com.prince.bankr.ui.screens.addtransaction
+package com.prince.bankr.ui.screens.addTransaction
 
 // Core Compose
 import androidx.compose.foundation.layout.*
@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 
 // ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 
 // Date handling

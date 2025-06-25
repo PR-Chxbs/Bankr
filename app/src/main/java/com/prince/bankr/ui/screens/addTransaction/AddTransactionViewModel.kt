@@ -1,4 +1,4 @@
-package com.prince.bankr.ui.screens.addtransaction
+package com.prince.bankr.ui.screens.addTransaction
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
