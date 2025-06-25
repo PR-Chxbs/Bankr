@@ -1,5 +1,6 @@
 package com.prince.bankr.ui.screens.addTransaction
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -36,6 +37,8 @@ class AddTransactionViewModel @Inject constructor(
 
     // Session vars
     val userId: Int = 1
+
+    var imageUri: Uri? by mutableStateOf(null)
 
     init {
         loadCategories()

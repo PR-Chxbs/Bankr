@@ -1,36 +1,37 @@
 package com.prince.bankr.ui.screens.addTransaction
 
-// Core Compose
+// Compose imports
+import android.app.DatePickerDialog
+import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-
-// Icons
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
-
-// ViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-
-// Date handling
-import android.app.DatePickerDialog
-import android.widget.Toast
-import java.text.SimpleDateFormat
-import java.util.*
-
-// Data model
+import coil.compose.rememberAsyncImagePainter
 import com.prince.bankr.data.local.enums.Type
-
-// Components
 import com.prince.bankr.ui.components.DropdownSelector
 import com.prince.bankr.ui.components.SegmentedButton
+import com.prince.bankr.utils.saveImageToInternalStorage
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +51,13 @@ fun AddTransactionScreen(
         SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(viewModel.date)
     }
 
+    // Image picker
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            val path = saveImageToInternalStorage(context, it)
+            viewModel.receiptImagePath = path
+        }
+    }
 
     Scaffold(
         topBar = topBar,
@@ -58,10 +66,16 @@ fun AddTransactionScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Amount
+            SegmentedButton(
+                options = Type.entries.toList(),
+                selectedIndex = selectedType,
+                onOptionSelected = { viewModel.transactionType = it }
+            )
+
             OutlinedTextField(
                 value = viewModel.amount.toString(),
                 onValueChange = { viewModel.amount = it.toIntOrNull() ?: 0 },
@@ -70,7 +84,6 @@ fun AddTransactionScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Description
             OutlinedTextField(
                 value = viewModel.description,
                 onValueChange = { viewModel.description = it },
@@ -78,7 +91,6 @@ fun AddTransactionScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Account dropdown
             DropdownSelector(
                 label = "Select Account",
                 options = accounts,
@@ -87,7 +99,6 @@ fun AddTransactionScreen(
                 optionLabel = { it.name }
             )
 
-            // Category dropdown
             DropdownSelector(
                 label = "Select Category",
                 options = categories,
@@ -96,45 +107,61 @@ fun AddTransactionScreen(
                 optionLabel = { it.name }
             )
 
-            // Transaction type selector
-            SegmentedButton(
-                options = Type.entries.toList(),
-                selectedIndex = selectedType,
-                onOptionSelected = { viewModel.transactionType = it }
-            )
-
-            // Date picker
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
-                    val calendar = Calendar.getInstance().apply { time = viewModel.date }
-                    DatePickerDialog(
-                        context,
-                        { _, year, month, dayOfMonth ->
-                            val newDate = Calendar.getInstance().apply {
-                                set(year, month, dayOfMonth)
-                            }.time
-                            viewModel.date = newDate
-                        },
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                    ).show()
-                }
+                modifier = Modifier
+                    .clickable {
+                        val calendar = Calendar.getInstance().apply { time = viewModel.date }
+                        DatePickerDialog(
+                            context,
+                            { _, year, month, dayOfMonth ->
+                                val newDate = Calendar.getInstance().apply {
+                                    set(year, month, dayOfMonth)
+                                }.time
+                                viewModel.date = newDate
+                            },
+                            calendar.get(Calendar.YEAR),
+                            calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH)
+                        ).show()
+                    }
+                    .padding(vertical = 4.dp)
             ) {
                 Icon(Icons.Default.CalendarToday, contentDescription = "Pick date")
                 Spacer(Modifier.width(8.dp))
                 Text("Date: $formattedDate")
             }
 
-            // Submit button
-            Button(onClick = {
-                viewModel.addTransaction()
-                Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show()
-            }) {
+            // Attach Image Button
+            Button(onClick = { launcher.launch("image/*") }) {
+                Text("Attach Receipt Image")
+            }
+
+            // Show selected image preview
+            viewModel.receiptImagePath?.let { path ->
+                if (File(path).exists()) {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = File(path)),
+                        contentDescription = "Receipt Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Text("Image not found at path: $path", color = Color.Red)
+                }
+            }
+
+            Button(
+                onClick = {
+                    viewModel.addTransaction()
+                    Toast.makeText(context, "Transaction Added", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
                 Text("Add Transaction")
             }
         }
     }
-
 }
