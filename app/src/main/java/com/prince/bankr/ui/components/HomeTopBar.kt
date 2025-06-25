@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.MaterialTheme
 
 import com.prince.bankr.R
+import com.prince.bankr.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +39,7 @@ fun HomeTopBar(navController: NavController) {
                         .size(36.dp)
                         .clip(CircleShape)
                         .clickable {
-                            navController.navigate("profileMenu")
+                            navController.navigate(Screen.ProfileMenu.route)
                         },
                     contentScale = ContentScale.Crop
                 )

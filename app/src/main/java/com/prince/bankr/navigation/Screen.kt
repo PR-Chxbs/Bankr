@@ -5,10 +5,13 @@ sealed class Screen(val route: String) {
     object Login: Screen("login")
     object Register: Screen("register")
 
-    // --------- App routes ---------
+    // --------- Main App routes ---------
     object Home: Screen("home")
     object Analytics: Screen("analytics")
     object AddTransaction: Screen("addTransaction")
     object Budget: Screen("budget")
     object Accounts: Screen("accounts")
+
+    // --------- Profile Menu routes ---------
+    object ProfileMenu: Screen("profileMenu")
 }

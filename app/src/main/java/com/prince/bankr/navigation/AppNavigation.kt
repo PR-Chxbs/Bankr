@@ -1,11 +1,10 @@
 package com.prince.bankr.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.prince.bankr.ui.screens.addtransaction.AddTransactionScreen
+import com.prince.bankr.ui.screens.addTransaction.AddTransactionScreen
 import com.prince.bankr.ui.screens.auth.LoginScreen
 import com.prince.bankr.ui.screens.auth.RegisterScreen
 //import com.prince.bankr.ui.screens.home.HomeScreen
@@ -14,6 +13,7 @@ import com.prince.bankr.R
 import com.prince.bankr.ui.components.BottomNavBar
 import com.prince.bankr.ui.components.HomeTopBar
 import com.prince.bankr.ui.screens.PlaceholderScreen
+import com.prince.bankr.ui.screens.profileMenu.ProfileMenuScreen
 
 @Composable
 fun AppNavigation() {
@@ -50,6 +50,9 @@ fun AppNavigation() {
     )
 
     NavHost(navController, startDestination = Screen.Login.route) {
+
+        // --------- Auth Routes ---------
+
         composable(Screen.Login.route) {
             LoginScreen(
                 onLoginSuccess = { navController.navigate(Screen.Home.route)
@@ -71,6 +74,9 @@ fun AppNavigation() {
                 onGoToLogin = { navController.navigate(Screen.Login.route)}
             )
         }
+
+
+        // --------- Main App Routes ---------
 
         composable(Screen.Home.route) {
             PlaceholderScreen(
@@ -158,6 +164,14 @@ fun AppNavigation() {
                     )
                 },
                 screen = "Accounts"
+            )
+        }
+
+
+        // --------- Profile Menu Routes ---------
+        composable(Screen.ProfileMenu.route) {
+            ProfileMenuScreen(
+                navController = navController
             )
         }
     }
