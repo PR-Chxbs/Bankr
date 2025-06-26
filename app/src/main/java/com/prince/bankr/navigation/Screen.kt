@@ -24,4 +24,7 @@ sealed class Screen(val route: String) {
 
     // Category
     object AddCategory: Screen("addCategory")
+
+    // Badges
+    object Badges: Screen("badges")
 }

@@ -1,14 +1,18 @@
 package com.prince.bankr.ui.screens.budget
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,9 +35,18 @@ fun BudgetScreen(
     val progress by viewModel.budgetProgress.collectAsState()
     val dailyAllowance by viewModel.dailyAllowance.collectAsState()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.badgeEvents.collect { msg ->
+            snackbarHostState.showSnackbar(message = msg)
+        }
+    }
+
     Scaffold(
         topBar = topBar,
         bottomBar = bottomBar,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddBudgetClick) {
                 Icon(Icons.Default.Add, contentDescription = "Set Budget")
@@ -92,8 +105,15 @@ fun TransactionItem(txn: TransactionWithDetails) {
     val formatter = remember { SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .background(MaterialTheme.colorScheme.background) // Theme background
+            .border(1.dp, Color(0xFF767676), RoundedCornerShape(16.dp)), // Border
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     ) {
         Row(
             modifier = Modifier.padding(12.dp),

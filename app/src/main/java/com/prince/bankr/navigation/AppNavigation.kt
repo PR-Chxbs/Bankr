@@ -15,6 +15,7 @@ import com.prince.bankr.ui.components.HomeTopBar
 import com.prince.bankr.ui.screens.PlaceholderScreen
 import com.prince.bankr.ui.screens.account.AccountsScreen
 import com.prince.bankr.ui.screens.account.AddAccountScreen
+import com.prince.bankr.ui.screens.badges.BadgeScreen
 import com.prince.bankr.ui.screens.budget.BudgetScreen
 import com.prince.bankr.ui.screens.budget.SetBudgetScreen
 import com.prince.bankr.ui.screens.category.AddCategoryScreen
@@ -207,6 +208,23 @@ fun AppNavigation() {
             CategoriesScreen(
                 onBackClick = {navController.navigate(Screen.ProfileMenu.route)},
                 onAddCategoryClick = {navController.navigate(Screen.AddCategory.route)}
+            )
+        }
+
+        composable(Screen.Badges.route) {
+            BadgeScreen(
+                topBar = {
+                    HomeTopBar(
+                        navController = navController
+                    )
+                },
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Accounts.route
+                    )
+                }
             )
         }
 

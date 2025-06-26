@@ -8,6 +8,7 @@ import com.prince.bankr.data.local.enums.Type
 import com.prince.bankr.data.local.rich.transaction.TransactionWithDetails
 import com.prince.bankr.data.repository.BudgetGoalRepository
 import com.prince.bankr.data.repository.TransactionRepository
+import com.prince.bankr.gamification.BadgeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
     private val budgetGoalRepo: BudgetGoalRepository,
-    private val transactionRepo: TransactionRepository
+    private val transactionRepo: TransactionRepository,
+    private val badgeManager: BadgeManager
 ) : ViewModel() {
 
     private val _userId = 1
@@ -70,6 +72,7 @@ class BudgetViewModel @Inject constructor(
                     it.month == currentMonth && it.year == currentYear
                 }
             }
+            checkForBadges()
         }
     }
 
@@ -84,7 +87,21 @@ class BudgetViewModel @Inject constructor(
                     isSameMonth && isSameYear && isExpense
                 }
                 _expenses.value = filtered
+                checkForBadges()
             }
         }
     }
+
+    private val _badgeEvents = MutableSharedFlow<String>()
+    val badgeEvents = _badgeEvents.asSharedFlow()
+
+    fun checkForBadges() {
+        viewModelScope.launch {
+            val earned = badgeManager.evaluateBadges(_userId)
+            earned.forEach {
+                _badgeEvents.emit("🎉 New Badge: ${it.name}!")
+            }
+        }
+    }
+
 }

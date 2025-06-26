@@ -57,6 +57,12 @@ fun ProfileMenuScreen(
             )
 
             NavItem(
+                itemName = "Badges",
+                iconRes = R.drawable.ic_home_icon,
+                onHandleClick = {navController.navigate(Screen.Badges.route)}
+            )
+
+            NavItem(
                 itemName = "Settings",
                 iconRes = R.drawable.ic_home_icon,
                 onHandleClick = {navController.navigate(Screen.Category.route)}

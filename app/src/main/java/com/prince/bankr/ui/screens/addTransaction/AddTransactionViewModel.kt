@@ -10,7 +10,10 @@ import com.prince.bankr.data.local.entities.Category
 import com.prince.bankr.data.local.entities.Transaction
 import com.prince.bankr.data.local.enums.Type
 import com.prince.bankr.data.repository.*
+import com.prince.bankr.gamification.BadgeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -19,7 +22,8 @@ import javax.inject.Inject
 class AddTransactionViewModel @Inject constructor(
     private val transactionRepo: TransactionRepository,
     private val accountRepo: AccountRepository,
-    private val categoryRepo: CategoryRepository
+    private val categoryRepo: CategoryRepository,
+    private val badgeManager: BadgeManager
 ): ViewModel() {
 
     // UI State
@@ -66,6 +70,18 @@ class AddTransactionViewModel @Inject constructor(
 
         viewModelScope.launch {
             transactionRepo.insertTransaction(transaction)
+        }
+    }
+
+    private val _badgeEvents = MutableSharedFlow<String>()
+    val badgeEvents = _badgeEvents.asSharedFlow()
+
+    fun checkForBadges() {
+        viewModelScope.launch {
+            val earned = badgeManager.evaluateBadges(userId)
+            earned.forEach {
+                _badgeEvents.emit("🎉 New Badge: ${it.name}!")
+            }
         }
     }
 }

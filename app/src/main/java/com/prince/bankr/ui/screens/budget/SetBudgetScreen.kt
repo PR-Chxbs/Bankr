@@ -26,6 +26,14 @@ fun SetBudgetScreen(
     var year by remember { mutableIntStateOf(Calendar.getInstance().get(Calendar.YEAR)) }
     var totalBudget by remember { mutableIntStateOf(0) }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.badgeEvents.collect { msg ->
+            snackbarHostState.showSnackbar(message = msg)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -37,7 +45,8 @@ fun SetBudgetScreen(
                 }
             )
         },
-        bottomBar = bottomBar
+        bottomBar = bottomBar,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { padding ->
         Column(
             modifier = Modifier
