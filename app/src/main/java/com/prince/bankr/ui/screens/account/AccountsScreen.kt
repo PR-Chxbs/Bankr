@@ -2,6 +2,8 @@ package com.prince.bankr.ui.screens.account
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -77,6 +80,12 @@ fun AccountsScreen(
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
+                    Text(
+                        text = "My Accounts",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         items(accounts) { account ->
                             AccountCard(account = account)
@@ -93,9 +102,13 @@ fun AccountCard(account: Account) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(90.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .height(70.dp)
+            .background(MaterialTheme.colorScheme.background) // Theme background
+            .border(1.dp, Color(0xFF767676), RoundedCornerShape(16.dp)), // Border
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        )
     ) {
         Row(
             modifier = Modifier

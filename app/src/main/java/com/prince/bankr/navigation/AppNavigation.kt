@@ -14,6 +14,7 @@ import com.prince.bankr.ui.components.BottomNavBar
 import com.prince.bankr.ui.components.HomeTopBar
 import com.prince.bankr.ui.screens.PlaceholderScreen
 import com.prince.bankr.ui.screens.account.AccountsScreen
+import com.prince.bankr.ui.screens.account.AddAccountScreen
 import com.prince.bankr.ui.screens.category.AddCategoryScreen
 import com.prince.bankr.ui.screens.category.CategoriesScreen
 import com.prince.bankr.ui.screens.profileMenu.ProfileMenuScreen
@@ -166,26 +167,14 @@ fun AppNavigation() {
                         currentRoute = Screen.Accounts.route
                     )
                 },
-                onAddAccountClick = {}
+                onAddAccountClick = {navController.navigate(Screen.AddAccount.route)}
             )
         }
 
         // Account extras
         composable(Screen.AddAccount.route) {
-            AddTransactionScreen(
-                topBar = {
-                    HomeTopBar(
-                        navController = navController
-                    )
-                },
-                bottomBar = {
-                    BottomNavBar(
-                        items = bottomNavItems,
-                        navController = navController,
-                        currentRoute = Screen.Accounts.route
-                    )
-                }
-
+            AddAccountScreen(
+                onBackClick = {navController.navigate(Screen.Accounts.route)}
             )
         }
 

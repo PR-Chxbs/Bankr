@@ -14,6 +14,7 @@ fun iconKeyToDrawableRes(iconKey: String): Int {
         "health" -> R.drawable.ic_home_icon
         "education" -> R.drawable.ic_home_icon
         "gift" -> R.drawable.ic_home_icon
+        "fnb" -> R.drawable.ac_fnb
         else -> R.drawable.ic_home_icon // fallback icon
     }
 }

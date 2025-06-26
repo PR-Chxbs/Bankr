@@ -17,7 +17,7 @@ class AccountsViewModel @Inject constructor(
 ) : ViewModel() {
 
     // private val userId: Int = checkNotNull(savedStateHandle["userId"])
-    private val userId: Int = -1
+    private val userId: Int = 1
 
     private val _uiState = MutableStateFlow<AccountsUiState>(AccountsUiState.Loading)
     val uiState: StateFlow<AccountsUiState> = _uiState
