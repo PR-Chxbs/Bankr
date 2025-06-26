@@ -29,6 +29,9 @@ room = "2.6.1"
 # coil
 coil = "2.5.0" # Use the latest version you need
 
+# chart
+# compose-charts = "1.0.0" # or latest available
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -67,6 +70,9 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 
 # coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+# chart
+# charts = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "compose-charts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

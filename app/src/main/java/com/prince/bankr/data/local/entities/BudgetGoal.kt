@@ -16,7 +16,7 @@ data class BudgetGoal(
     val user_id: Int,
     val name: String,
     val description: String,
-    val month: Date,
-    val year: Date,
+    val month: Int,
+    val year: Int,
     val total_budget: Int
 )

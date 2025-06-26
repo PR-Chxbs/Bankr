@@ -85,4 +85,7 @@ dependencies {
 
     // coil
     implementation(libs.coil.compose)
+
+    // chart
+    // implementation(libs.charts)
 }
