@@ -2,6 +2,7 @@ package com.prince.bankr.data.local.dao
 
 import androidx.room.*
 import com.prince.bankr.data.local.entities.Transaction
+import com.prince.bankr.data.local.rich.transaction.TransactionWithDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -29,4 +30,9 @@ interface TransactionDao {
 
     @Query("SELECT SUM(amount) FROM transactions WHERE user_id = :userId AND type = :type")
     suspend fun getTotalAmountByType(userId: Int, type: String): Int?
+
+    @androidx.room.Transaction
+    @Query("SELECT * FROM transactions WHERE user_id = :userId")
+    fun getTransactionsWithDetails(userId: Int): Flow<List<TransactionWithDetails>>
+
 }

@@ -7,10 +7,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prince.bankr.data.local.entities.Transaction
+import com.prince.bankr.data.local.rich.transaction.TransactionWithDetails
+import com.prince.bankr.utils.iconKeyToDrawableRes
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -74,7 +78,7 @@ fun BudgetScreen(
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(expenses) { txn ->
-                        TransactionItem(transaction = txn)
+                        TransactionItem(txn = txn)
                     }
                 }
             }
@@ -83,16 +87,41 @@ fun BudgetScreen(
 }
 
 @Composable
-fun TransactionItem(transaction: Transaction) {
+fun TransactionItem(txn: TransactionWithDetails) {
+    val iconRes = iconKeyToDrawableRes(txn.category.iconKey)
     val formatter = remember { SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            Text("R${transaction.amount}", style = MaterialTheme.typography.titleMedium)
-            Text(transaction.description, style = MaterialTheme.typography.bodySmall)
-            Text(formatter.format(transaction.date), style = MaterialTheme.typography.labelSmall)
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = "Category icon",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(32.dp)
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(txn.transaction.description, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    txn.account.name,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Text(
+                "R${txn.transaction.amount}",
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
+

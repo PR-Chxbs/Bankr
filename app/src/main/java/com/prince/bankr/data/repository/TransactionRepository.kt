@@ -3,6 +3,7 @@ package com.prince.bankr.data.repository
 import kotlinx.coroutines.flow.Flow
 import com.prince.bankr.data.local.dao.TransactionDao
 import com.prince.bankr.data.local.entities.Transaction
+import com.prince.bankr.data.local.rich.transaction.TransactionWithDetails
 
 class TransactionRepository (private val transactionDao: TransactionDao) {
 
@@ -37,4 +38,9 @@ class TransactionRepository (private val transactionDao: TransactionDao) {
     suspend fun getTotalAmountByType(userId: Int, type: String): Int? {
         return transactionDao.getTotalAmountByType(userId, type)
     }
+
+    fun getTransactionsWithDetails(userId: Int): Flow<List<TransactionWithDetails>> {
+        return transactionDao.getTransactionsWithDetails(userId)
+    }
+
 }
