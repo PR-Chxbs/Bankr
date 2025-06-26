@@ -2,6 +2,7 @@ package com.prince.bankr.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.Date
 
@@ -9,6 +10,9 @@ import java.util.Date
     tableName = "budget_goals",
     foreignKeys = [
         ForeignKey(entity = User::class, parentColumns = ["user_id"], childColumns = ["user_id"])
+    ],
+    indices = [
+        Index(value = ["user_id", "month", "year"], unique = true)
     ]
 )
 data class BudgetGoal(

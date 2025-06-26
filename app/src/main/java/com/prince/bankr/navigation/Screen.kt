@@ -15,6 +15,9 @@ sealed class Screen(val route: String) {
     // Account Extras
     object AddAccount: Screen("addAccount")
 
+    // Budget Extras
+    object SetBudget: Screen("setBudget")
+
     // --------- Profile Menu routes ---------
     object ProfileMenu: Screen("profileMenu")
     object Category: Screen("category")

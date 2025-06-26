@@ -16,7 +16,7 @@ import com.prince.bankr.data.local.converters.Converters
         BudgetGoal::class,
         Badge::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

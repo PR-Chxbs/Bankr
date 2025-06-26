@@ -1,0 +1,98 @@
+package com.prince.bankr.ui.screens.budget
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.prince.bankr.data.local.entities.Transaction
+import java.text.SimpleDateFormat
+import java.util.*
+
+@Composable
+fun BudgetScreen(
+    topBar: @Composable () -> Unit,
+    bottomBar: @Composable () -> Unit,
+    onAddBudgetClick: () -> Unit,
+    viewModel: BudgetViewModel = hiltViewModel()
+) {
+    val budgetGoal by viewModel.budgetGoal.collectAsState()
+    val expenses by viewModel.expenses.collectAsState()
+    val totalSpent by viewModel.totalSpent.collectAsState()
+    val progress by viewModel.budgetProgress.collectAsState()
+    val dailyAllowance by viewModel.dailyAllowance.collectAsState()
+
+    Scaffold(
+        topBar = topBar,
+        bottomBar = bottomBar,
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAddBudgetClick) {
+                Icon(Icons.Default.Add, contentDescription = "Set Budget")
+            }
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = budgetGoal?.name ?: "No Budget Set",
+                style = MaterialTheme.typography.headlineSmall
+            )
+
+            if (budgetGoal != null) {
+                LinearProgressIndicator(
+                    progress = progress.coerceIn(0f, 1f),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "R${totalSpent} of R${budgetGoal!!.total_budget} used",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "R$dailyAllowance per day until the end of the month",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Expenses This Month",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            if (expenses.isEmpty()) {
+                Text("No expenses recorded.")
+            } else {
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(expenses) { txn ->
+                        TransactionItem(transaction = txn)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TransactionItem(transaction: Transaction) {
+    val formatter = remember { SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) }
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text("R${transaction.amount}", style = MaterialTheme.typography.titleMedium)
+            Text(transaction.description, style = MaterialTheme.typography.bodySmall)
+            Text(formatter.format(transaction.date), style = MaterialTheme.typography.labelSmall)
+        }
+    }
+}

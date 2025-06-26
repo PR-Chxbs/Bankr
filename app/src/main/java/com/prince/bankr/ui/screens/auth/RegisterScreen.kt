@@ -1,6 +1,7 @@
 package com.prince.bankr.ui.screens.auth
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -9,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.prince.bankr.R
 import com.prince.bankr.utils.global.spaceDp
 
 @Composable
@@ -28,6 +31,19 @@ fun RegisterScreen(
             .padding(spaceDp),
         verticalArrangement = Arrangement.Center
     ) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_bankr_foreground),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .width(300.dp),
+            )
+        }
+
         OutlinedTextField(
             value = viewModel.name,
             onValueChange = { viewModel.name = it },

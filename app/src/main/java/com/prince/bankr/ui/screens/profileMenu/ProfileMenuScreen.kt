@@ -34,7 +34,7 @@ fun ProfileMenuScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Category") },
+                title = { Text("Profile Menu") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")

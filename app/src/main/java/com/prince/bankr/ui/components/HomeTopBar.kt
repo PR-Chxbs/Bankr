@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 
 import com.prince.bankr.R
 import com.prince.bankr.navigation.Screen
+import com.prince.bankr.utils.global.spaceDp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +31,9 @@ fun HomeTopBar(navController: NavController) {
     TopAppBar(
         title = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = spaceDp),
                 horizontalArrangement = Arrangement.End
             ) {
                 Image(

@@ -15,6 +15,8 @@ import com.prince.bankr.ui.components.HomeTopBar
 import com.prince.bankr.ui.screens.PlaceholderScreen
 import com.prince.bankr.ui.screens.account.AccountsScreen
 import com.prince.bankr.ui.screens.account.AddAccountScreen
+import com.prince.bankr.ui.screens.budget.BudgetScreen
+import com.prince.bankr.ui.screens.budget.SetBudgetScreen
 import com.prince.bankr.ui.screens.category.AddCategoryScreen
 import com.prince.bankr.ui.screens.category.CategoriesScreen
 import com.prince.bankr.ui.screens.profileMenu.ProfileMenuScreen
@@ -136,7 +138,7 @@ fun AppNavigation() {
         }
 
         composable(Screen.Budget.route) {
-            PlaceholderScreen(
+            BudgetScreen(
                 topBar = {
                     HomeTopBar(
                         navController = navController
@@ -149,7 +151,7 @@ fun AppNavigation() {
                         currentRoute = Screen.Budget.route
                     )
                 },
-                screen = "Budget"
+                onAddBudgetClick = {navController.navigate(Screen.SetBudget.route)}
             )
         }
 
@@ -175,6 +177,21 @@ fun AppNavigation() {
         composable(Screen.AddAccount.route) {
             AddAccountScreen(
                 onBackClick = {navController.navigate(Screen.Accounts.route)}
+            )
+        }
+
+        // Budget extras
+        composable(Screen.SetBudget.route) {
+            SetBudgetScreen(
+                bottomBar = {
+                    BottomNavBar(
+                        items = bottomNavItems,
+                        navController = navController,
+                        currentRoute = Screen.Budget.route
+                    )
+                },
+                onBudgetSaved = {navController.popBackStack()},
+                onBackClick = {navController.popBackStack()}
             )
         }
 
